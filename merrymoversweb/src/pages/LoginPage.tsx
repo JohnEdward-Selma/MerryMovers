@@ -5,28 +5,27 @@ import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 const LoginPage: React.FC = () => {
-  const [username, setUsername] = useState('sampleuser');
-  const [password, setPassword] = useState('samplepass');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    if (!username || !password) {
-      setError('Please enter both username and password.');
+    if (!email || !password) {
+      setError('Please enter both email and password.');
       return;
     }
-    // Compare input to sample values for demo error handling
-    if (username !== 'sampleuser' || password !== 'samplepass') {
-      setError('Incorrect username or password.');
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+      setError('Please enter a valid email address.');
       return;
     }
-    // No backend call, only sample value check
-    if (username === 'sampleuser' && password === 'samplepass') {
-      navigate('/'); // Redirect to homepage on success
-    } else {
-      setError('Incorrect username or password.');
+    try {
+      await login(email, password);
+      navigate('/');
+    } catch (err: any) {
+      setError(err?.message || 'Login failed.');
     }
   };
 
@@ -36,14 +35,14 @@ const LoginPage: React.FC = () => {
         <div style={{ textAlign: 'center', marginBottom: '8px', fontWeight: 700, fontSize: '1.5rem', color: '#0F766E' }}>Merry Movers</div>
         <h2>Login</h2>
         <div className="input-group">
-          <label htmlFor="username">Username</label>
+          <label htmlFor="email">Email</label>
           <input
-            type="text"
-            id="username"
-            value={username}
-            onChange={e => setUsername(e.target.value)}
-            placeholder="Enter your username"
-            autoComplete="username"
+            type="email"
+            id="email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            placeholder="Enter your email"
+            autoComplete="email"
           />
         </div>
         <div className="input-group">

@@ -5,17 +5,18 @@ import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 const RegisterPage: React.FC = () => {
-  const [username, setUsername] = useState('sampleuser');
-  const [email, setEmail] = useState('sampleuser@example.com');
-  const [password, setPassword] = useState('samplepass');
-  const [confirmPassword, setConfirmPassword] = useState('samplepass');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    if (!username || !email || !password || !confirmPassword) {
+    if (!firstName || !lastName || !email || !password || !confirmPassword) {
       setError('Please fill in all fields.');
       return;
     }
@@ -32,20 +33,11 @@ const RegisterPage: React.FC = () => {
       setError('Please enter a valid email address.');
       return;
     }
-    // Compare input to sample values for demo error handling
-    if (username !== 'sampleuser' || email !== 'sampleuser@example.com' || password !== 'samplepass' || confirmPassword !== 'samplepass') {
-      setError('Sample values required: sampleuser, sampleuser@example.com, samplepass');
-      return;
-    }
-    // No backend call, only sample value check
-    if (email === 'sampleuser@example.com') {
-      setError('This email is already taken.');
-      return;
-    }
-    if (username === 'sampleuser' && email !== 'sampleuser@example.com' && password === 'samplepass' && confirmPassword === 'samplepass') {
-      navigate('/'); // Redirect to homepage on success
-    } else {
-      setError('Sample values required: sampleuser, sampleuser@example.com, samplepass');
+    try {
+      await register(email, password, firstName, lastName);
+      navigate('/login');
+    } catch (err: any) {
+      setError(err?.message || 'Registration failed.');
     }
   };
 
@@ -55,14 +47,25 @@ const RegisterPage: React.FC = () => {
         <div style={{ textAlign: 'center', marginBottom: '8px', fontWeight: 700, fontSize: '1.5rem', color: '#0F766E' }}>Merry Movers</div>
         <h2>Register</h2>
         <div className="input-group">
-          <label htmlFor="username">Username</label>
+          <label htmlFor="firstName">First Name</label>
           <input
             type="text"
-            id="username"
-            value={username}
-            onChange={e => setUsername(e.target.value)}
-            placeholder="Enter your username"
-            autoComplete="username"
+            id="firstName"
+            value={firstName}
+            onChange={e => setFirstName(e.target.value)}
+            placeholder="Enter your first name"
+            autoComplete="given-name"
+          />
+        </div>
+        <div className="input-group">
+          <label htmlFor="lastName">Last Name</label>
+          <input
+            type="text"
+            id="lastName"
+            value={lastName}
+            onChange={e => setLastName(e.target.value)}
+            placeholder="Enter your last name"
+            autoComplete="family-name"
           />
         </div>
         <div className="input-group">

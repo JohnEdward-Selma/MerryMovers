@@ -1,10 +1,10 @@
 // src/api/auth.ts
 
-export async function login(username: string, password: string) {
+export async function login(email: string, password: string) {
   const response = await fetch('/api/auth/login', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username, password }),
+    body: JSON.stringify({ email, password }),
   });
   if (!response.ok) {
     const error = await response.text();
@@ -13,11 +13,11 @@ export async function login(username: string, password: string) {
   return await response.json();
 }
 
-export async function register(username: string, email: string, password: string) {
+export async function register(email: string, password: string, firstName: string, lastName: string) {
   const response = await fetch('/api/auth/register', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username, email, password }),
+    body: JSON.stringify({ email, password, firstName, lastName }),
   });
   if (!response.ok) {
     const error = await response.text();

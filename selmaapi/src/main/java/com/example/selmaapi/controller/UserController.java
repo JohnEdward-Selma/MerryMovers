@@ -17,27 +17,38 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
-        User created = userService.registerUser(request.getUsername(), request.getEmail(), request.getPassword());
-        if (created == null) {
-            return ResponseEntity.badRequest().body("Username or email already exists");
+        try {
+            User created = userService.registerUser(
+                    request.getEmail(),
+                    request.getPassword(),
+                    request.getFirstName(),
+                    request.getLastName()
+            );
+            if (created == null) {
+                return ResponseEntity.badRequest().body("Email already exists");
+            }
+            UserResponse response = new UserResponse();
+            response.setId(created.getId());
+            response.setEmail(created.getEmail());
+            response.setFirstName(created.getFirstName());
+            response.setLastName(created.getLastName());
+            return ResponseEntity.ok(response);
+        } catch (Exception ex) {
+            return ResponseEntity.status(500).body(ex.getMessage());
         }
-        UserResponse response = new UserResponse();
-        response.setId(created.getId());
-        response.setUsername(created.getUsername());
-        response.setEmail(created.getEmail());
-        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
-        User found = userService.authenticateUser(request.getUsername(), request.getPassword());
+        User found = userService.authenticateUser(request.getEmail(), request.getPassword());
         if (found == null) {
             return ResponseEntity.status(401).body("Invalid credentials");
         }
         UserResponse response = new UserResponse();
         response.setId(found.getId());
-        response.setUsername(found.getUsername());
         response.setEmail(found.getEmail());
+        response.setFirstName(found.getFirstName());
+        response.setLastName(found.getLastName());
         return ResponseEntity.ok(response);
     }
 }

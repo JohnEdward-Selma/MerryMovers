@@ -4,11 +4,11 @@ MerryMovers is a full-stack web application for managing moving services, featur
 
 ## Project Structure
 
-- **merrymoversweb/**: React 19 frontend application
+- **merry_movers_web/**: React 19 frontend application
   - `src/` contains components, pages, and API logic
   - `public/` contains static assets and the main HTML file
   - `package.json` manages dependencies and scripts
-- **selmaapi/**: Spring Boot 4 backend API
+- **merry_movers_backend/**: Spring Boot 4 backend API
   - `src/main/java/` contains Java source code (controllers, services, entities, repositories)
   - `src/main/resources/` contains configuration files
   - `pom.xml` manages backend dependencies
@@ -29,17 +29,17 @@ MerryMovers is a full-stack web application for managing moving services, featur
 - Maven
 - PostgreSQL database (Supabase or local)
 
-### Backend Setup (selmaapi)
-1. Configure your database connection in `selmaapi/src/main/resources/application.properties`.
-2. From the `selmaapi` directory, build and run:
+### Backend Setup (merry_movers_backend)
+1. Configure your database connection in `merry_movers_backend/src/main/resources/application.properties`.
+2. From the `merry_movers_backend` directory, build and run:
    ```sh
    ./mvnw clean install
    ./mvnw spring-boot:run
    ```
    The backend runs on port 8081 by default.
 
-### Frontend Setup (merrymoversweb)
-1. From the `merrymoversweb` directory, install dependencies:
+### Frontend Setup (merry_movers_web)
+1. From the `merry_movers_web` directory, install dependencies:
    ```sh
    npm install
    ```
